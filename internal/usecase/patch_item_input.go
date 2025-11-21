@@ -19,6 +19,7 @@ func (p *PatchItemInput) HasUpdates() bool {
 		p.PurchasePrice != nil
 }
 
+// ApplyTo は PatchItemInput の内容を指定された Item に適用
 func (p *PatchItemInput) ApplyTo(item *entity.Item) {
 	if p.Name != nil {
 		item.Name = *p.Name
