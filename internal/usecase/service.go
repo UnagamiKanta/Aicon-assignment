@@ -103,6 +103,8 @@ func (u *itemUsecase) PatchItem(ctx context.Context, id int64, input PatchItemIn
 		return nil, fmt.Errorf("failed to retrieve item: %w", err)
 	}
 
+	// 入力値を元にentityを更新
+	// TODO: existingItemだと更新の前後がわかりにくいため、renewedItemなど別変数に格納して更新する
 	input.ApplyTo(existingItem)
 	if err := existingItem.Validate(); err != nil {
 		return nil, fmt.Errorf("%w: %s", domainErrors.ErrInvalidInput, err.Error())
