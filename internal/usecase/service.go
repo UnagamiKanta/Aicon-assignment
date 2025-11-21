@@ -91,12 +91,10 @@ func (u *itemUsecase) UpdateItem(ctx context.Context, id int64, input UpdateItem
 		return nil, domainErrors.ErrInvalidInput
 	}
 
-	// 更新するフィールドが存在するかチェック
 	if !input.HasUpdates() {
 		return nil, fmt.Errorf("%w: no fields to update", domainErrors.ErrInvalidInput)
 	}
 
-	// 既存のアイテムを取得
 	existingItem, err := u.itemRepo.FindByID(ctx, id)
 	if err != nil {
 		if domainErrors.IsNotFoundError(err) {
@@ -105,29 +103,11 @@ func (u *itemUsecase) UpdateItem(ctx context.Context, id int64, input UpdateItem
 		return nil, fmt.Errorf("failed to retrieve item: %w", err)
 	}
 
-	// 部分更新を適用（nilでないフィールドのみ更新）
-	if input.Name != nil {
-		existingItem.Name = *input.Name
-	}
-	if input.Category != nil {
-		existingItem.Category = *input.Category
-	}
-	if input.Brand != nil {
-		existingItem.Brand = *input.Brand
-	}
-	if input.PurchasePrice != nil {
-		existingItem.PurchasePrice = *input.PurchasePrice
-	}
-	if input.PurchaseDate != nil {
-		existingItem.PurchaseDate = *input.PurchaseDate
-	}
-
-	// ドメインバリデーション
+	input.ApplyTo(existingItem)
 	if err := existingItem.Validate(); err != nil {
 		return nil, fmt.Errorf("%w: %s", domainErrors.ErrInvalidInput, err.Error())
 	}
 
-	// リポジトリで更新
 	updatedItem, err := u.itemRepo.Update(ctx, existingItem)
 	if err != nil {
 		return nil, fmt.Errorf("failed to update item: %w", err)
