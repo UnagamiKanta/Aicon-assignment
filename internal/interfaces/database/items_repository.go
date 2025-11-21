@@ -91,7 +91,7 @@ func (r *ItemRepository) Create(ctx context.Context, item *entity.Item) (*entity
 func (r *ItemRepository) Patch(ctx context.Context, item *entity.Item) (*entity.Item, error) {
 	query := `
 		UPDATE items
-		SET name = ?, brand = ?, purchase_price = ?, purchase_date = ?, updated_at = CURRENT_TIMESTAMP
+		SET name = ?, brand = ?, purchase_price = ?, updated_at = CURRENT_TIMESTAMP
 		WHERE id = ?
 	`
 
@@ -162,7 +162,7 @@ func scanItem(scanner interface {
 	Scan(dest ...interface{}) error
 }) (*entity.Item, error) {
 	var item entity.Item
-	var purchaseDate string
+	var purchaseDate time.Time
 	var createdAt, updatedAt time.Time
 
 	err := scanner.Scan(
@@ -179,14 +179,8 @@ func scanItem(scanner interface {
 		return nil, err
 	}
 
-	if purchaseDate != "" {
-		if parsedDate, err := time.Parse("2006-01-02", purchaseDate); err == nil {
-			item.PurchaseDate = parsedDate.Format("2006-01-02")
-		} else {
-			item.PurchaseDate = purchaseDate
-		}
-	}
-
+	// time.Time を YYYY-MM-DD 形式の文字列に変換
+	item.PurchaseDate = purchaseDate.Format("2006-01-02")
 	item.CreatedAt = createdAt
 	item.UpdatedAt = updatedAt
 
