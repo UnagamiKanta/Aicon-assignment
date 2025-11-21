@@ -88,7 +88,7 @@ func (r *ItemRepository) Create(ctx context.Context, item *entity.Item) (*entity
 	return r.FindByID(ctx, id)
 }
 
-func (r *ItemRepository) Update(ctx context.Context, item *entity.Item) (*entity.Item, error) {
+func (r *ItemRepository) Patch(ctx context.Context, item *entity.Item) (*entity.Item, error) {
 	query := `
 		UPDATE items
 		SET name = ?, brand = ?, purchase_price = ?, purchase_date = ?, updated_at = CURRENT_TIMESTAMP
