@@ -12,7 +12,7 @@ type ItemUsecase interface {
 	GetAllItems(ctx context.Context) ([]*entity.Item, error)
 	GetItemByID(ctx context.Context, id int64) (*entity.Item, error)
 	CreateItem(ctx context.Context, input CreateItemInput) (*entity.Item, error)
-	UpdateItem(ctx context.Context, id int64, input UpdateItemInput) (*entity.Item, error)
+	PatchItem(ctx context.Context, id int64, input PatchItemInput) (*entity.Item, error)
 	DeleteItem(ctx context.Context, id int64) error
 	GetCategorySummary(ctx context.Context) (*CategorySummary, error)
 }
@@ -86,7 +86,7 @@ func (u *itemUsecase) CreateItem(ctx context.Context, input CreateItemInput) (*e
 	return createdItem, nil
 }
 
-func (u *itemUsecase) UpdateItem(ctx context.Context, id int64, input UpdateItemInput) (*entity.Item, error) {
+func (u *itemUsecase) PatchItem(ctx context.Context, id int64, input PatchItemInput) (*entity.Item, error) {
 	if id <= 0 {
 		return nil, domainErrors.ErrInvalidInput
 	}
@@ -108,7 +108,7 @@ func (u *itemUsecase) UpdateItem(ctx context.Context, id int64, input UpdateItem
 		return nil, fmt.Errorf("%w: %s", domainErrors.ErrInvalidInput, err.Error())
 	}
 
-	updatedItem, err := u.itemRepo.Update(ctx, existingItem)
+	updatedItem, err := u.itemRepo.Patch(ctx, existingItem)
 	if err != nil {
 		return nil, fmt.Errorf("failed to update item: %w", err)
 	}
