@@ -95,12 +95,23 @@ curl -X POST http://localhost:8080/items \
 curl -X GET http://localhost:8080/items/1
 ```
 
-#### 4. アイテム削除
+#### 4. アイテム更新
+```bash
+curl -X PATCH http://localhost:8080/items/1 \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "ロレックス サブマリーナ",
+    "brand": "xxxxx",
+    "purchase_price": 1800000",
+  }'
+```
+
+#### 5. アイテム削除
 ```bash
 curl -X DELETE http://localhost:8080/items/1
 ```
 
-#### 5. カテゴリー別集計
+#### 6. カテゴリー別集計
 ```bash
 curl -X GET http://localhost:8080/items/summary
 ```
