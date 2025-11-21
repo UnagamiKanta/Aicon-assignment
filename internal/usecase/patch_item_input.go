@@ -13,20 +13,20 @@ type PatchItemInput struct {
 }
 
 // HasUpdates は更新するフィールドが1つでも存在するかチェック
-func (u *PatchItemInput) HasUpdates() bool {
-	return u.Name != nil ||
-		u.Brand != nil ||
-		u.PurchasePrice != nil
+func (p *PatchItemInput) HasUpdates() bool {
+	return p.Name != nil ||
+		p.Brand != nil ||
+		p.PurchasePrice != nil
 }
 
-func (u *PatchItemInput) ApplyTo(item *entity.Item) {
-	if u.Name != nil {
-		item.Name = *u.Name
+func (p *PatchItemInput) ApplyTo(item *entity.Item) {
+	if p.Name != nil {
+		item.Name = *p.Name
 	}
-	if u.Brand != nil {
-		item.Brand = *u.Brand
+	if p.Brand != nil {
+		item.Brand = *p.Brand
 	}
-	if u.PurchasePrice != nil {
-		item.PurchasePrice = *u.PurchasePrice
+	if p.PurchasePrice != nil {
+		item.PurchasePrice = *p.PurchasePrice
 	}
 }
