@@ -1,5 +1,9 @@
 package usecase
 
+import (
+	"Aicon-assignment/internal/domain/entity"
+)
+
 // UpdateItemInput はアイテムの部分更新用の入力構造体
 // nil の場合はそのフィールドを更新しないことを意味する
 type UpdateItemInput struct {
@@ -15,3 +19,14 @@ func (u *UpdateItemInput) HasUpdates() bool {
 		u.PurchasePrice != nil
 }
 
+func (u *UpdateItemInput) ApplyTo(item *entity.Item) {
+	if u.Name != nil {
+		item.Name = *u.Name
+	}
+	if u.Brand != nil {
+		item.Brand = *u.Brand
+	}
+	if u.PurchasePrice != nil {
+		item.PurchasePrice = *u.PurchasePrice
+	}
+}
