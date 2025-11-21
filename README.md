@@ -17,6 +17,7 @@ http://localhost:8080
 | GET | `/items` | 全アイテム取得 | 200 |
 | POST | `/items` | アイテム登録 | 201, 400 |
 | GET | `/items/{id}` | 特定アイテム取得 | 200, 404 |
+| PATCH| `/items/{id}` | アイテム更新| 200, 404|
 | DELETE | `/items/{id}` | アイテム削除 | 204, 404 |
 | GET | `/items/summary` | カテゴリー別集計 | 200 |
 
